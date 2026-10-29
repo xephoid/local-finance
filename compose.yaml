@@ -1,0 +1,28 @@
+services:
+  finance:
+    build: .
+    user: "10001:10001"
+    init: true
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      FINANCE_DATA_DIR: /data
+      FINANCE_BIND: 0.0.0.0
+      FINANCE_PORT: "8787"
+      FINANCE_TLS_SANS: ${FINANCE_TLS_SANS:-localhost,127.0.0.1}
+      FINANCE_OLLAMA_URL: ${FINANCE_OLLAMA_URL:-http://127.0.0.1:11434}
+      FINANCE_OLLAMA_MODEL: ${FINANCE_OLLAMA_MODEL:-qwen3:8b}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+    ports:
+      - "${FINANCE_LAN_IP:-127.0.0.1}:${FINANCE_PORT:-8787}:8787"
+    volumes:
+      - finance-data:/data
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    command: ["serve"]
+volumes:
+  finance-data:

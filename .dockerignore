@@ -1,0 +1,12 @@
+**
+!Dockerfile
+!finance.py
+!assistant_features.py
+!deployment.py
+!notify.py
+!supervise.py
+!provision.py
+!static/
+!static/materialize.min.css
+!static/finance.css
+!static/LICENSE.materialize

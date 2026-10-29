@@ -1,0 +1,47 @@
+/* Private Finance — system fonts, no remote assets, no JavaScript required. */
+:root { color-scheme: light; }
+html { font-size: 16px; }
+body { margin: 0; background: #f2f5f9; color: #172539; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.6; }
+.finance-shell { width: calc(100% - 48px); max-width: 1440px; margin: 40px auto 64px; }
+.finance-section, .login-card { background: #fff; border: 1px solid #d8e1ec; border-radius: 12px; padding: 28px; margin: 0 0 24px; box-shadow: 0 2px 6px #17253908; }
+.overview { border-top: 5px solid #1858af; }
+h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 700; line-height: 1.2; margin: 0 0 16px; letter-spacing: -.025em; }
+h2 { font-size: 1.35rem; font-weight: 650; line-height: 1.35; margin: 0 0 18px; }
+p { margin: 0 0 18px; max-width: 90ch; }
+a { color: #164f9e; text-decoration: underline; text-underline-offset: 3px; }
+form { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin: 18px 0; }
+label { display: block; flex: 1 1 220px; min-width: 0; color: #263a52; font-size: .95rem; font-weight: 600; }
+select.browser-default, input:not([type="hidden"]):not([type="checkbox"]) { display: block; box-sizing: border-box; width: 100%; height: 46px; margin: 7px 0 0; padding: 8px 12px; background: #fff; color: #172539; border: 1px solid #8799af; border-radius: 6px; font: inherit; box-shadow: none; }
+button { min-height: 44px; height: auto; padding: 11px 18px; background: #1858af; color: white; border: 1px solid #1858af; border-radius: 7px; font: inherit; font-weight: 600; line-height: 1.45; cursor: pointer; }
+button:hover, button:focus { background: #104385; }
+button[name="disable"], form[action="/logout"] button { color: #1d426f; background: #edf3fa; border-color: #b5c7de; }
+:focus-visible { outline: 3px solid #9b5200 !important; outline-offset: 4px; }
+/* Preserve a real native checkbox, including keyboard focus, under Materialize. */
+input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked { position: static; opacity: 1; pointer-events: auto; width: 20px; height: 20px; margin: 0; flex: 0 0 20px; accent-color: #1858af; }
+label:has(input[type="checkbox"]) { display: flex; align-items: start; gap: 10px; flex-basis: 100%; font-weight: 400; cursor: pointer; }
+input[type="checkbox"] + span:not(.lever) { padding: 0; height: auto; line-height: 1.5; font-size: .95rem; color: #263a52; }
+input[type="checkbox"] + span:not(.lever)::before, input[type="checkbox"] + span:not(.lever)::after { display: none; }
+.table-scroll { width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; margin: 18px 0; border: 1px solid #d8e1ec; border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: .94rem; font-variant-numeric: tabular-nums; }
+th { background: #edf2f8; color: #304761; font-weight: 650; text-align: left; white-space: nowrap; }
+th, td { border-bottom: 1px solid #dfe6ef; padding: 14px 16px; vertical-align: top; line-height: 1.55; }
+tr:last-child td { border-bottom: 0; }
+tr:nth-child(even) td { background: #f9fbfd; }
+td { min-width: 115px; overflow-wrap: anywhere; }
+td:has(form) { min-width: 290px; }
+td form { display: flex; flex-direction: column; align-items: stretch; gap: 14px; margin: 0; }
+td form label { flex: none; }
+td:nth-child(3) { font-variant-numeric: tabular-nums; }
+pre { margin: 0; padding: 18px; background: #f2f5f9; border-radius: 6px; color: #304761; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9rem; line-height: 1.65; }
+.login-card { max-width: 480px; margin: 12vh auto 0; padding: 36px; border-top: 5px solid #1858af; }
+.login-card form { display: block; }
+.login-card button { width: 100%; margin-top: 24px; }
+@media (max-width: 640px) {
+  .finance-shell { width: calc(100% - 24px); margin-top: 16px; }
+  .finance-section, .login-card { padding: 18px; border-radius: 9px; margin-bottom: 16px; }
+  .login-card { margin-top: 8vh; }
+  h2 { font-size: 1.2rem; }
+  form { gap: 16px; }
+  form > label, form > button { flex-basis: 100%; width: 100%; }
+  th, td { padding: 12px; }
+}
