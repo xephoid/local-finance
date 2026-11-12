@@ -157,7 +157,7 @@ def sync(store,secret_file,fetch=fetch_json):
     fetching=False
     try:
         p=pathlib.Path(secret_file)
-        if p.is_symlink() or p.stat().st_mode & 0o077: raise ValueError('Private credential required')
+        if p.is_symlink() or (os.name!='nt' and p.stat().st_mode & 0o077): raise ValueError('Private credential required')
         u=urllib.parse.urlsplit(p.read_text().strip())
         if u.scheme!='https' or u.hostname not in ('bridge.simplefin.org','beta-bridge.simplefin.org') or u.port not in (None,443) or not u.username or not u.password or u.query or u.fragment: raise ValueError('Invalid credential endpoint')
         auth=base64.b64encode((urllib.parse.unquote(u.username)+':'+urllib.parse.unquote(u.password)).encode()).decode()

@@ -36,22 +36,26 @@ def provision_token(token, output):
         raise ValueError('Invalid setup token') from None
     path.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
     st=path.parent.stat()
-    if st.st_mode & 0o077 or st.st_uid!=os.getuid():raise ValueError('Private owned output directory required')
+    if os.name!='nt' and st.st_mode & 0o077: raise ValueError('Private owned output directory required')
+    if hasattr(os,'getuid') and st.st_uid!=os.getuid(): raise ValueError('Private owned output directory required')
     # Reserve before consuming a single-use token; a failure leaves a private
     # marker. Inspect locally before replacing it; never blindly repeat a claim.
-    fd=os.open(path,os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600)
+    flags=os.O_CREAT|os.O_EXCL|os.O_WRONLY
+    if hasattr(os,'O_NOFOLLOW'): flags|=os.O_NOFOLLOW
+    fd=os.open(path,flags,0o600)
     with os.fdopen(fd,'wb') as output_file:
         request=urllib.request.Request(url,data=b'',headers={'User-Agent':'LocalFinance/1.0','Accept':'text/plain'})
         raw=claim(request)
         output_file.write(raw)
         output_file.flush()
         os.fsync(output_file.fileno())
-    directory=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
-    try:os.fsync(directory)
-    finally:os.close(directory)
+    if os.name!='nt':
+        directory=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
+        try:os.fsync(directory)
+        finally:os.close(directory)
     try:
         access=urllib.parse.urlsplit(raw.decode('ascii').strip())
-        if access.scheme!='https' or access.hostname not in HOSTS or access.port not in (None,443) or not access.username or not access.password or access.query or access.fragment or not access.path.startswith('/simplefin/'):
+        if access.scheme!='https' or access.hostname not in HOSTS or access.port not in (None,443) or not access.username or not access.password or access.query or access.fragment or not (access.path.startswith('/simplefin/') or access.path=='/simplefin'):
             raise ValueError()
     except Exception:
         raise ValueError('Claim saved privately but credential validation failed') from None
